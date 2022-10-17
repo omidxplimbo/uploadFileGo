@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 )
 
 const randomStringSource = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+"
@@ -144,4 +146,17 @@ func (t *Tools) CreateFileIfNotExists(path string) error {
 	}
 
 	return nil
+}
+
+// slugify string
+
+func (t *Tools) SlugifyString(s string) (string, error) {
+
+	if s == "" {
+		return "", errors.New("String is empty value")
+	}
+
+	var re = regexp.MustCompile(`[^a-z\d]+`)
+	slug := strings.Trim(re.ReplaceAllString(strings.ToLower(s), "-"), "-")
+	return slug, nil
 }
