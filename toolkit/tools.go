@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -159,4 +160,18 @@ func (t *Tools) SlugifyString(s string) (string, error) {
 	var re = regexp.MustCompile(`[^a-z\d]+`)
 	slug := strings.Trim(re.ReplaceAllString(strings.ToLower(s), "-"), "-")
 	return slug, nil
+}
+
+func (t *Tools) GetServerName(h string) ([]string, error) {
+	nameservers, err := net.LookupNS(h)
+	if err != nil {
+		return nil, errors.New(err.Error())
+	}
+
+	result := []string{}
+	for i := range nameservers {
+		result = append(result, nameservers[i].Host)
+	}
+
+	return result, nil
 }

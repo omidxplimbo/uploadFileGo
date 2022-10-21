@@ -3,6 +3,7 @@ go 1.18
 use (
 	./app
 	./createFile
+	./getServerName
 	./slugify
 	./toolkit
 	./web-app
