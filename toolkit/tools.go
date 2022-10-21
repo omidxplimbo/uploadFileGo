@@ -2,9 +2,11 @@ package toolkit
 
 import (
 	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -162,6 +164,7 @@ func (t *Tools) SlugifyString(s string) (string, error) {
 	return slug, nil
 }
 
+// get dns
 func (t *Tools) GetServerName(h string) ([]string, error) {
 	nameservers, err := net.LookupNS(h)
 	if err != nil {
@@ -174,4 +177,26 @@ func (t *Tools) GetServerName(h string) ([]string, error) {
 	}
 
 	return result, nil
+}
+
+// create base64 encode and decode
+
+func (t *Tools) Base64Tools(ty string, s string) string {
+
+	switch ty {
+	case "encode":
+		// Encode bytes to base64 encoded string.
+		encodedString := base64.StdEncoding.EncodeToString([]byte(s))
+		return encodedString
+	case "decode":
+		// Decode base64 encoded string to bytes.
+		decodedData, err := base64.StdEncoding.DecodeString(s)
+		if err != nil {
+			log.Fatal("Error decoding data. ", err)
+		}
+
+		return string(decodedData)
+	}
+
+	return ""
 }
